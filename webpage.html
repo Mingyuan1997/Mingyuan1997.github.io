@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mingyuan Wu</title>
+  <meta name="description" content="Mingyuan Wu — research on VLMs, RL for reasoning, and agentic multimodal systems." />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --fg: #0a0a0a;
+      --muted: #666;
+      --link: #0b57d0;
+      --border: #e6e6e6;
+      --accent: #111;
+      --maxw: 1000px;
+    }
+    html, body { height: 100%; }
+    body {
+      margin: 0; font: 16px/1.55 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--fg); background: var(--bg);
+      -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+    }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .wrap { max-width: var(--maxw); margin: 0 auto; padding: 40px 20px; }
+    .layout {
+      display: grid; grid-template-columns: 280px 1fr; gap: 32px;
+    }
+    @media (max-width: 860px) {
+      .layout { grid-template-columns: 1fr; }
+    }
+    /* Sidebar */
+    .sidebar { position: sticky; top: 24px; align-self: start; }
+    .avatar { width: 200px; height: 200px; border-radius: 12px; object-fit: cover; display: block; border: 1px solid var(--border); }
+    .name { font-size: 28px; font-weight: 700; margin: 16px 0 4px; letter-spacing: 0.2px; }
+    .name-alt { color: var(--muted); font-size: 15px; margin-bottom: 12px; }
+    .links { display: flex; flex-wrap: wrap; gap: 10px; margin: 8px 0 6px; }
+    .links a { font-weight: 500; }
+    .links .dot { color: #aaa; }
+    .email { margin-top: 6px; }
+
+    /* Main */
+    main section { margin-bottom: 40px; }
+    h2 { font-size: 18px; margin: 0 0 12px; letter-spacing: 0.2px; }
+    .hi { font-size: 16px; }
+
+    /* Research list */
+    .toggle {
+      display: inline-flex; align-items: baseline; gap: 8px; font-size: 14px; color: var(--muted);
+    }
+    .toggle button { background: none; border: none; color: var(--muted); cursor: pointer; padding: 0; font: inherit; }
+    .toggle button[aria-pressed="true"] { color: var(--accent); font-weight: 600; }
+    .toggle .paren { color: #bbb; user-select: none; }
+
+    .entries { border-top: 1px solid var(--border); margin-top: 14px; }
+    .entry { padding: 16px 0; border-bottom: 1px solid var(--border); }
+    .title { font-weight: 600; }
+    .meta { color: var(--muted); font-size: 14px; margin: 4px 0 8px; }
+    .desc { margin: 0; }
+    .actions { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 10px; font-size: 14px; }
+
+    /* Show Selected vs All */
+    .entries:not(.show-all) .entry:not([data-selected="true"]) { display: none; }
+
+    /* Events */
+    .events li { margin-bottom: 8px; }
+
+    /* Footer */
+    footer { color: var(--muted); font-size: 13px; margin-top: 60px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="layout">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <!-- Replace assets/me.jpg with your own photo path (e.g., /assets/me.jpg). -->
+        <img class="avatar" src="https://placehold.co/400x400" alt="Portrait of Mingyuan Wu" />
+        <div class="name">Mingyuan Wu</div>
+        <!-- Optional: add your name in another language -->
+        <!-- <div class="name-alt">吴明远</div> -->
+
+        <nav class="links" aria-label="Profile links">
+          <a rel="me" href="#">X/Twitter</a><span class="dot">•</span>
+          <a rel="me" href="https://github.com/">GitHub</a><span class="dot">•</span>
+          <a rel="me" href="#">Google Scholar</a><span class="dot">•</span>
+          <a href="#">Anon Feedback</a>
+        </nav>
+        <div class="email"><a href="mailto:your.name@domain.com">your.name@domain.com</a></div>
+      </aside>
+
+      <!-- Main -->
+      <main>
+        <section id="about">
+          <h2>Hi</h2>
+          <p class="hi">
+            I'm a PhD candidate at the University of Illinois Urbana–Champaign (UIUC) in the MONET group advised by
+            Prof. Klara Nahrstedt. My research focuses on post‑training and inference‑time methods for
+            vision‑language models (VLMs), self‑verification, and agentic multimodal assistants with tool use and memory.
+          </p>
+          <p class="hi">
+            Recently, I'm most excited about reinforcement learning for reasoning‑heavy VLMs, building evaluation and
+            training pipelines that interleave visual editing tools into the chain of thought.
+          </p>
+        </section>
+
+        <section id="research" aria-labelledby="research-heading">
+          <div style="display:flex; align-items: baseline; gap: 12px; justify-content: space-between;">
+            <h2 id="research-heading">Research</h2>
+            <div class="toggle" role="group" aria-label="Filter publications">
+              <span class="paren">(</span>
+              <button id="btn-selected" aria-pressed="true" aria-controls="research-list">Selected</button>
+              <span>/</span>
+              <button id="btn-all" aria-pressed="false" aria-controls="research-list">All</button>
+              <span class="paren">)</span>
+            </div>
+          </div>
+
+          <div id="research-list" class="entries" aria-live="polite">
+            <!-- Each entry → mark data-selected="true" to include in Selected view.  -->
+
+            <article class="entry" data-selected="true">
+              <div class="title">Cache‑of‑Thought (CoT): Collaborative Inference with Memory for VLMs</div>
+              <div class="meta">EMNLP 2025 (main). Authors: Wu, M., Ji, R., Zheng, H., Li, J., Tian, B., Chen, B., Zhang, R., Chakareski, J., Zink, M., & Nahrstedt, K.</div>
+              <p class="desc">A master–apprentice framework that caches high‑quality exemplars from large VLMs and retrieves them to boost small VLMs under a fixed budget.</p>
+              <div class="actions">
+                <a href="#">Paper</a> • <a href="#">Code</a> • <a href="#">Project</a>
+              </div>
+            </article>
+
+            <article class="entry" data-selected="true">
+              <div class="title">VTool‑R1: Interleaving Visual Editing Tools into VLM Reasoning with RL</div>
+              <div class="meta">Preprint 2025. First‑author.</div>
+              <p class="desc">Two‑stage RL framework (GRPO) enabling VLMs to reason with images step‑by‑step and call visual tools during reasoning.</p>
+              <div class="actions">
+                <a href="#">Paper</a> • <a href="#">Code</a>
+              </div>
+            </article>
+
+            <article class="entry" data-selected="true">
+              <div class="title">SVR‑R1 / STaR‑R1: Self‑Verified RL for Reasoning</div>
+              <div class="meta">Preprint 2025.</div>
+              <p class="desc">Reinforcement learning methods that incentivize self‑verification and outcome‑based improvements for complex reasoning tasks.</p>
+              <div class="actions"><a href="#">Paper</a></div>
+            </article>
+
+            <article class="entry" data-selected="false">
+              <div class="title">Anywhere Avatar: 3D Telepresence with Just a Phone and Laptop</div>
+              <div class="meta">Project / Demo.</div>
+              <p class="desc">A lightweight telepresence system enabling 6‑DoF viewing using commodity devices and neural representations.</p>
+              <div class="actions"><a href="#">Project</a> • <a href="#">Video</a></div>
+            </article>
+
+            <article class="entry" data-selected="false">
+              <div class="title">Interactive Scene Graph for VR Teleconferencing</div>
+              <div class="meta">Project.</div>
+              <p class="desc">Scene‑graph‑driven interaction for foveated rendering, user hints, and in‑call context management.</p>
+            </article>
+
+            <article class="entry" data-selected="false">
+              <div class="title">NeuVol / NeRFHub: Immersive NeRF Streaming</div>
+              <div class="meta">Project.</div>
+              <p class="desc">Infrastructure for streaming large‑scale neural radiance fields with resilience to bandwidth variation.</p>
+            </article>
+
+            <article class="entry" data-selected="false">
+              <div class="title">TraceNet</div>
+              <div class="meta">MIPR 2025 (camera‑ready).</div>
+              <p class="desc">Tracing and analytics for multimedia systems with real‑world constraints.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="events">
+          <h2>Events</h2>
+          <ul class="events">
+            <li>July 17, 2025 — PhD Prelim, UIUC.</li>
+            <li>May 2025 — EMNLP 2025 camera‑ready (CoT).</li>
+            <li>2024–2025 — Internship at Meta (FAIR/GenAI): RL‑based VLM reasoning.</li>
+          </ul>
+        </section>
+
+        <section id="more">
+          <h2>More About Me</h2>
+          <p>Beyond research, I enjoy building practical, user‑aligned systems: agentic multimodal assistants, interactive telepresence, and spreadsheet agents. I value clean interfaces, reproducible code, and thoughtful evaluations.</p>
+        </section>
+
+        <footer>
+          © <span id="year"></span> Mingyuan Wu. Last updated by hand.
+        </footer>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    // Selected / All toggle
+    const entries = document.querySelector('.entries');
+    const btnSel = document.getElementById('btn-selected');
+    const btnAll = document.getElementById('btn-all');
+    function setMode(all) {
+      if (all) {
+        entries.classList.add('show-all');
+        btnSel.setAttribute('aria-pressed', 'false');
+        btnAll.setAttribute('aria-pressed', 'true');
+      } else {
+        entries.classList.remove('show-all');
+        btnSel.setAttribute('aria-pressed', 'true');
+        btnAll.setAttribute('aria-pressed', 'false');
+      }
+    }
+    btnSel.addEventListener('click', () => setMode(false));
+    btnAll.addEventListener('click', () => setMode(true));
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
