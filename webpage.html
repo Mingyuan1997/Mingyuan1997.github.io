@@ -3,169 +3,438 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Mingyuan Wu</title>
-  <meta name="description" content="Mingyuan Wu — research on VLMs, RL for reasoning, and agentic multimodal systems." />
+  <title>TBD</title>
+  <meta name="description" content="TBD" />
   <style>
     :root {
-      --bg: #ffffff;
-      --fg: #0a0a0a;
-      --muted: #666;
-      --link: #0b57d0;
-      --border: #e6e6e6;
-      --accent: #111;
-      --maxw: 1000px;
+      color-scheme: light;
+      --bg: #fdfdf9;
+      --fg: #121212;
+      --muted: #5f5f5f;
+      --accent: #2940d3;
+      --accent-soft: rgba(41, 64, 211, 0.08);
+      --border: rgba(12, 12, 12, 0.08);
+      --shadow: 0 18px 60px rgba(22, 22, 22, 0.08);
+      --max-width: 1100px;
     }
-    html, body { height: 100%; }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      margin: 0; font: 16px/1.55 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
-      color: var(--fg); background: var(--bg);
-      -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+      margin: 0;
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+      font-size: 17px;
+      line-height: 1.7;
+      background: var(--bg);
+      color: var(--fg);
+      -webkit-font-smoothing: antialiased;
     }
-    a { color: var(--link); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    .wrap { max-width: var(--maxw); margin: 0 auto; padding: 40px 20px; }
-    .layout {
-      display: grid; grid-template-columns: 280px 1fr; gap: 32px;
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      position: relative;
     }
-    @media (max-width: 860px) {
-      .layout { grid-template-columns: 1fr; }
+
+    a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -4px;
+      width: 100%;
+      height: 1px;
+      background: currentColor;
+      opacity: 0;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      transform: translateY(4px);
     }
-    /* Sidebar */
-    .sidebar { position: sticky; top: 24px; align-self: start; }
-    .avatar { width: 200px; height: 200px; border-radius: 12px; object-fit: cover; display: block; border: 1px solid var(--border); }
-    .name { font-size: 28px; font-weight: 700; margin: 16px 0 4px; letter-spacing: 0.2px; }
-    .name-alt { color: var(--muted); font-size: 15px; margin-bottom: 12px; }
-    .links { display: flex; flex-wrap: wrap; gap: 10px; margin: 8px 0 6px; }
-    .links a { font-weight: 500; }
-    .links .dot { color: #aaa; }
-    .email { margin-top: 6px; }
 
-    /* Main */
-    main section { margin-bottom: 40px; }
-    h2 { font-size: 18px; margin: 0 0 12px; letter-spacing: 0.2px; }
-    .hi { font-size: 16px; }
-
-    /* Research list */
-    .toggle {
-      display: inline-flex; align-items: baseline; gap: 8px; font-size: 14px; color: var(--muted);
+    a:hover::after,
+    a:focus-visible::after {
+      opacity: 1;
+      transform: translateY(0);
     }
-    .toggle button { background: none; border: none; color: var(--muted); cursor: pointer; padding: 0; font: inherit; }
-    .toggle button[aria-pressed="true"] { color: var(--accent); font-weight: 600; }
-    .toggle .paren { color: #bbb; user-select: none; }
 
-    .entries { border-top: 1px solid var(--border); margin-top: 14px; }
-    .entry { padding: 16px 0; border-bottom: 1px solid var(--border); }
-    .title { font-weight: 600; }
-    .meta { color: var(--muted); font-size: 14px; margin: 4px 0 8px; }
-    .desc { margin: 0; }
-    .actions { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 10px; font-size: 14px; }
+    main {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 60px 22px 120px;
+    }
 
-    /* Show Selected vs All */
-    .entries:not(.show-all) .entry:not([data-selected="true"]) { display: none; }
+    header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 36px;
+    }
 
-    /* Events */
-    .events li { margin-bottom: 8px; }
+    .identity h1 {
+      font-size: clamp(28px, 4vw, 44px);
+      margin: 0;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
 
-    /* Footer */
-    footer { color: var(--muted); font-size: 13px; margin-top: 60px; }
+    .identity p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      max-width: 420px;
+    }
+
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      gap: 26px;
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .hero {
+      margin: 90px 0 120px;
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: 60px;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: -80px -120px -60px 40%;
+      background: radial-gradient(circle at top right, rgba(41, 64, 211, 0.18), transparent 65%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .hero h2 {
+      font-size: clamp(40px, 6vw, 68px);
+      line-height: 1.05;
+      margin: 0 0 24px;
+      font-weight: 600;
+    }
+
+    .hero p {
+      margin: 0 0 32px;
+      font-size: 20px;
+      max-width: 520px;
+      color: rgba(18, 18, 18, 0.82);
+    }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: 1px solid rgba(18, 18, 18, 0.08);
+      border-radius: 999px;
+      padding: 14px 30px;
+      background: white;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .cta:hover,
+    .cta:focus-visible {
+      transform: translateY(-2px);
+      box-shadow: 0 22px 50px rgba(41, 64, 211, 0.18);
+    }
+
+    .hero aside {
+      padding: 26px;
+      border: 1px solid var(--border);
+      border-radius: 26px;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(20px);
+      display: grid;
+      gap: 16px;
+      align-content: start;
+    }
+
+    .hero aside span {
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .hero aside strong {
+      font-size: 20px;
+    }
+
+    section {
+      margin-bottom: 120px;
+    }
+
+    section > h3 {
+      font-size: 24px;
+      margin: 0 0 28px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .two-column {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 32px;
+    }
+
+    .card {
+      padding: 26px 24px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(244, 244, 252, 0.72));
+      box-shadow: 0 18px 60px rgba(20, 20, 40, 0.04);
+    }
+
+    .card h4 {
+      margin: 0 0 14px;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .timeline {
+      position: relative;
+      padding-left: 40px;
+      display: grid;
+      gap: 34px;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 12px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: rgba(41, 64, 211, 0.18);
+    }
+
+    .timeline-item {
+      position: relative;
+      padding: 22px 26px;
+      border-radius: 20px;
+      border: 1px solid rgba(41, 64, 211, 0.16);
+      background: rgba(41, 64, 211, 0.04);
+      box-shadow: 0 18px 40px rgba(41, 64, 211, 0.08);
+    }
+
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: -31px;
+      top: 32px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: white;
+      border: 2px solid rgba(41, 64, 211, 0.9);
+      box-shadow: 0 0 0 6px rgba(41, 64, 211, 0.16);
+    }
+
+    .timeline-item time {
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(41, 64, 211, 0.82);
+    }
+
+    .timeline-item div {
+      margin-top: 12px;
+      font-size: 18px;
+      color: rgba(18, 18, 18, 0.85);
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .gallery div {
+      aspect-ratio: 4 / 3;
+      border-radius: 18px;
+      border: 1px solid rgba(18, 18, 18, 0.08);
+      background: repeating-linear-gradient(135deg, rgba(41, 64, 211, 0.12), rgba(41, 64, 211, 0.12) 20px, rgba(41, 64, 211, 0.04) 20px, rgba(41, 64, 211, 0.04) 40px);
+      display: grid;
+      place-items: center;
+      font-weight: 600;
+      color: rgba(41, 64, 211, 0.74);
+    }
+
+    footer {
+      padding: 60px 22px 90px;
+      text-align: center;
+      font-size: 14px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(18, 18, 18, 0.48);
+    }
+
+    @media (max-width: 900px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .hero::before {
+        inset: -120px -60px -40px -60px;
+      }
+
+      nav ul {
+        flex-wrap: wrap;
+        gap: 18px;
+      }
+
+      .timeline {
+        padding-left: 20px;
+      }
+
+      .timeline-item::before {
+        left: -22px;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="layout">
-      <!-- Sidebar -->
-      <aside class="sidebar">
-        <!-- Replace assets/me.jpg with your own photo path (e.g., /assets/me.jpg). -->
-        <img class="avatar" src="https://placehold.co/400x400" alt="Portrait of Mingyuan Wu" />
-        <div class="name">Mingyuan Wu</div>
-        <!-- Optional: add your name in another language -->
-        <!-- <div class="name-alt">吴明远</div> -->
+  <main>
+    <header>
+      <div class="identity">
+        <h1>TBD</h1>
+        <p>TBD</p>
+      </div>
+      <nav aria-label="Primary">
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#work">Work</a></li>
+          <li><a href="#writing">Writing</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
 
-        <nav class="links" aria-label="Profile links">
-          <a rel="me" href="#">X/Twitter</a><span class="dot">•</span>
-          <a rel="me" href="https://github.com/">GitHub</a><span class="dot">•</span>
-          <a rel="me" href="#">Google Scholar</a><span class="dot">•</span>
-          <a href="#">Anon Feedback</a>
-        </nav>
-        <div class="email"><a href="mailto:your.name@domain.com">your.name@domain.com</a></div>
+    <section class="hero" id="about">
+      <div>
+        <h2>TBD</h2>
+        <p>TBD</p>
+        <a class="cta" href="#contact">Get in touch</a>
+      </div>
+      <aside>
+        <span>Currently</span>
+        <strong>TBD</strong>
+        <span>Previously</span>
+        <strong>TBD</strong>
+        <span>Based in</span>
+        <strong>TBD</strong>
       </aside>
+    </section>
 
-      <!-- Main -->
-      <main>
-        <section id="about">
-          <h2>Hi</h2>
-          <p class="hi">
-            TBD
-          </p>
-          <p class="hi">
-            TBD
-          </p>
-        </section>
+    <section id="work">
+      <h3>Selected Work</h3>
+      <div class="two-column">
+        <article class="card">
+          <h4>TBD</h4>
+          <p>TBD</p>
+        </article>
+        <article class="card">
+          <h4>TBD</h4>
+          <p>TBD</p>
+        </article>
+        <article class="card">
+          <h4>TBD</h4>
+          <p>TBD</p>
+        </article>
+        <article class="card">
+          <h4>TBD</h4>
+          <p>TBD</p>
+        </article>
+      </div>
+    </section>
 
-        <section id="research" aria-labelledby="research-heading">
-          <div style="display:flex; align-items: baseline; gap: 12px; justify-content: space-between;">
-            <h2 id="research-heading">Research</h2>
-            <div class="toggle" role="group" aria-label="Filter publications">
-              <span class="paren">(</span>
-              <button id="btn-selected" aria-pressed="true" aria-controls="research-list">Selected</button>
-              <span>/</span>
-              <button id="btn-all" aria-pressed="false" aria-controls="research-list">All</button>
-              <span class="paren">)</span>
-            </div>
-          </div>
+    <section id="experience">
+      <h3>Experience</h3>
+      <p>TBD</p>
+      <div class="timeline">
+        <div class="timeline-item">
+          <time>TBD</time>
+          <div>TBD</div>
+        </div>
+        <div class="timeline-item">
+          <time>TBD</time>
+          <div>TBD</div>
+        </div>
+        <div class="timeline-item">
+          <time>TBD</time>
+          <div>TBD</div>
+        </div>
+      </div>
+    </section>
 
-          <div id="research-list" class="entries" aria-live="polite">
-            <!-- Each entry → mark data-selected="true" to include in Selected view.  -->
+    <section id="writing">
+      <h3>Writing & Notes</h3>
+      <div class="two-column">
+        <article class="card">
+          <h4>TBD</h4>
+          <p>TBD</p>
+        </article>
+        <article class="card">
+          <h4>TBD</h4>
+          <p>TBD</p>
+        </article>
+      </div>
+    </section>
 
-            <article class="entry" data-selected="true">
-              <div class="title">Cache‑of‑Thought (CoT): Collaborative Inference with Memory for VLMs</div>
-              <div class="meta">EMNLP 2025 (main). Authors: Wu, M., Ji, R., Zheng, H., Li, J., Tian, B., Chen, B., Zhang, R., Chakareski, J., Zink, M., & Nahrstedt, K.</div>
-              <p class="desc">A master–apprentice framework that caches high‑quality exemplars from large VLMs and retrieves them to boost small VLMs under a fixed budget.</p>
-              <div class="actions">
-                <a href="#">Paper</a> • <a href="#">Code</a> • <a href="#">Project</a>
-              </div>
-            </article>
-          </div>
-        </section>
+    <section id="gallery">
+      <h3>Gallery</h3>
+      <p>TBD</p>
+      <div class="gallery">
+        <div>TBD</div>
+        <div>TBD</div>
+        <div>TBD</div>
+        <div>TBD</div>
+      </div>
+    </section>
 
-        <section id="events">
-          <h2>Events</h2>
-          <ul class="events">
-            <li>TBD.</li>
-          </ul>
-        </section>
+    <section id="contact">
+      <h3>Contact</h3>
+      <div class="two-column">
+        <div>
+          <p>TBD</p>
+          <p>TBD</p>
+        </div>
+        <div class="card">
+          <h4>Email</h4>
+          <p><a href="mailto:tbd@example.com">tbd@example.com</a></p>
+          <h4 style="margin-top:18px;">Elsewhere</h4>
+          <p><a href="#">TBD</a></p>
+        </div>
+      </div>
+    </section>
+  </main>
 
-        <section id="more">
-          <h2>More About Me</h2>
-          <p>TBD.</p>
-        </section>
-
-        <footer>
-          © <span id="year"></span> TBD.
-        </footer>
-      </main>
-    </div>
-  </div>
+  <footer>
+    © <span id="year"></span> TBD. Crafted with intention.
+  </footer>
 
   <script>
-    // Selected / All toggle
-    const entries = document.querySelector('.entries');
-    const btnSel = document.getElementById('btn-selected');
-    const btnAll = document.getElementById('btn-all');
-    function setMode(all) {
-      if (all) {
-        entries.classList.add('show-all');
-        btnSel.setAttribute('aria-pressed', 'false');
-        btnAll.setAttribute('aria-pressed', 'true');
-      } else {
-        entries.classList.remove('show-all');
-        btnSel.setAttribute('aria-pressed', 'true');
-        btnAll.setAttribute('aria-pressed', 'false');
-      }
-    }
-    btnSel.addEventListener('click', () => setMode(false));
-    btnAll.addEventListener('click', () => setMode(true));
-    // Year
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
