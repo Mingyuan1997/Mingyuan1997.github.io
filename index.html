@@ -3,439 +3,205 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>TBD</title>
-  <meta name="description" content="TBD" />
+  <title>Mingyuan Wu — Replica (TBD)</title>
   <style>
-    :root {
-      color-scheme: light;
-      --bg: #fdfdf9;
-      --fg: #121212;
-      --muted: #5f5f5f;
-      --accent: #2940d3;
-      --accent-soft: rgba(41, 64, 211, 0.08);
-      --border: rgba(12, 12, 12, 0.08);
-      --shadow: 0 18px 60px rgba(22, 22, 22, 0.08);
-      --max-width: 1100px;
+    :root{
+      --bg: #fbf6ed;
+      --paper: #fffaf1;
+      --ink: #1f2328;
+      --muted: #6b7280;
+      --accent: #0a58ca;
+      --rule: #e8e0d1;
     }
-
-    * {
-      box-sizing: border-box;
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+      color:var(--ink);
+      background:var(--bg);
+      line-height:1.55;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
     }
-
-    body {
-      margin: 0;
-      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
-      font-size: 17px;
-      line-height: 1.7;
-      background: var(--bg);
-      color: var(--fg);
-      -webkit-font-smoothing: antialiased;
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .page{
+      max-width:1100px;
+      margin:0 auto;
+      padding:24px 20px 80px;
+      display:grid;
+      grid-template-columns: 280px 1fr;
+      grid-gap: 32px;
     }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-      position: relative;
+    @media (max-width: 860px){
+      .page{grid-template-columns:1fr}
+      .sidebar{position:static; top:auto}
     }
-
-    a::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: -4px;
-      width: 100%;
-      height: 1px;
-      background: currentColor;
-      opacity: 0;
-      transition: opacity 0.2s ease, transform 0.2s ease;
-      transform: translateY(4px);
+    .card{
+      background:var(--paper);
+      border:1px solid var(--rule);
+      border-radius:14px;
+      box-shadow: 0 1px 0 rgba(0,0,0,.02), 0 6px 20px rgba(0,0,0,.04);
     }
-
-    a:hover::after,
-    a:focus-visible::after {
-      opacity: 1;
-      transform: translateY(0);
+    .sidebar{
+      position:sticky;
+      top:16px;
+      padding:18px;
     }
-
-    main {
-      max-width: var(--max-width);
-      margin: 0 auto;
-      padding: 60px 22px 120px;
+    .profile{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:14px;
     }
-
-    header {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 36px;
+    .avatar{
+      width:140px;height:140px;border-radius:14px;
+      object-fit:cover;
+      border:1px solid var(--rule);
+      background:#f1eadf;
+      display:block;
     }
-
-    .identity h1 {
-      font-size: clamp(28px, 4vw, 44px);
-      margin: 0;
-      font-weight: 600;
-      letter-spacing: -0.01em;
+    .name{
+      font-weight:700;
+      font-size:1.4rem;
     }
-
-    .identity p {
-      margin: 6px 0 0;
-      color: var(--muted);
-      max-width: 420px;
+    .name small{display:block;color:var(--muted);font-size:.95rem;margin-top:2px}
+    .links{
+      display:flex;flex-wrap:wrap;gap:10px 14px;justify-content:center;margin-top:6px;
+      font-size:0.95rem;
     }
-
-    nav ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      gap: 26px;
-      font-size: 15px;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
+    .links a{position:relative}
+    .links a:after{
+      content:"";position:absolute;left:0;bottom:-1px;width:100%;height:1px;background:currentColor;opacity:.15;
+      transform:scaleX(0);transform-origin:left;transition:transform .2s ease;
     }
-
-    .hero {
-      margin: 90px 0 120px;
-      position: relative;
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-      gap: 60px;
+    .links a:hover:after{transform:scaleX(1)}
+    .anon-feedback{display:block;text-align:center;margin-top:2px}
+    .content{
+      padding:22px 26px;
     }
-
-    .hero::before {
-      content: "";
-      position: absolute;
-      inset: -80px -120px -60px 40%;
-      background: radial-gradient(circle at top right, rgba(41, 64, 211, 0.18), transparent 65%);
-      z-index: -1;
-      pointer-events: none;
+    h1,h2{
+      margin: 10px 0 12px;
     }
-
-    .hero h2 {
-      font-size: clamp(40px, 6vw, 68px);
-      line-height: 1.05;
-      margin: 0 0 24px;
-      font-weight: 600;
+    h2{
+      font-size:1.15rem;
+      letter-spacing:.02em;
+      text-transform:uppercase;
+      font-weight:800;
+      border-bottom:1px solid var(--rule);
+      padding-bottom:6px;
     }
-
-    .hero p {
-      margin: 0 0 32px;
-      font-size: 20px;
-      max-width: 520px;
-      color: rgba(18, 18, 18, 0.82);
+    .hello h1{
+      font-size:1.6rem;
+      display:flex;align-items:center;gap:.55rem;
     }
-
-    .cta {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 15px;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      border: 1px solid rgba(18, 18, 18, 0.08);
-      border-radius: 999px;
-      padding: 14px 30px;
-      background: white;
-      box-shadow: var(--shadow);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    .hello p{margin: 10px 0}
+    .muted{color:var(--muted)}
+    .select-line{
+      font-size:.95rem;color:var(--muted);
     }
-
-    .cta:hover,
-    .cta:focus-visible {
-      transform: translateY(-2px);
-      box-shadow: 0 22px 50px rgba(41, 64, 211, 0.18);
+    .list{
+      list-style:none;margin:0;padding:0;
     }
-
-    .hero aside {
-      padding: 26px;
-      border: 1px solid var(--border);
-      border-radius: 26px;
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(20px);
-      display: grid;
-      gap: 16px;
-      align-content: start;
+    .list li{
+      padding:10px 0 12px;
+      border-bottom:1px dashed var(--rule);
     }
-
-    .hero aside span {
-      font-size: 12px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--muted);
+    .paper-title{
+      font-weight:700;
     }
-
-    .hero aside strong {
-      font-size: 20px;
+    .paper-meta{
+      color:var(--muted);
+      font-size:.96rem;
+      margin-top:2px;
     }
-
-    section {
-      margin-bottom: 120px;
+    .emoji{font-size:1.1em}
+    .events .date{
+      font-weight:700;
     }
-
-    section > h3 {
-      font-size: 24px;
-      margin: 0 0 28px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--muted);
+    .foot-space{height:16px}
+    .chip{
+      display:inline-block;
+      font-size:.8rem;
+      padding:.1rem .45rem;
+      border:1px solid var(--rule);
+      border-radius:999px;
+      background:#fff;
+      vertical-align:baseline;
+      margin-left:.4rem;
+      color:var(--muted);
     }
-
-    .two-column {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 32px;
-    }
-
-    .card {
-      padding: 26px 24px;
-      border-radius: 20px;
-      border: 1px solid var(--border);
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(244, 244, 252, 0.72));
-      box-shadow: 0 18px 60px rgba(20, 20, 40, 0.04);
-    }
-
-    .card h4 {
-      margin: 0 0 14px;
-      font-size: 20px;
-      font-weight: 600;
-    }
-
-    .card p {
-      margin: 0;
-      color: var(--muted);
-    }
-
-    .timeline {
-      position: relative;
-      padding-left: 40px;
-      display: grid;
-      gap: 34px;
-    }
-
-    .timeline::before {
-      content: "";
-      position: absolute;
-      left: 12px;
-      top: 0;
-      bottom: 0;
-      width: 2px;
-      background: rgba(41, 64, 211, 0.18);
-    }
-
-    .timeline-item {
-      position: relative;
-      padding: 22px 26px;
-      border-radius: 20px;
-      border: 1px solid rgba(41, 64, 211, 0.16);
-      background: rgba(41, 64, 211, 0.04);
-      box-shadow: 0 18px 40px rgba(41, 64, 211, 0.08);
-    }
-
-    .timeline-item::before {
-      content: "";
-      position: absolute;
-      left: -31px;
-      top: 32px;
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: white;
-      border: 2px solid rgba(41, 64, 211, 0.9);
-      box-shadow: 0 0 0 6px rgba(41, 64, 211, 0.16);
-    }
-
-    .timeline-item time {
-      font-size: 14px;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: rgba(41, 64, 211, 0.82);
-    }
-
-    .timeline-item div {
-      margin-top: 12px;
-      font-size: 18px;
-      color: rgba(18, 18, 18, 0.85);
-    }
-
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-    }
-
-    .gallery div {
-      aspect-ratio: 4 / 3;
-      border-radius: 18px;
-      border: 1px solid rgba(18, 18, 18, 0.08);
-      background: repeating-linear-gradient(135deg, rgba(41, 64, 211, 0.12), rgba(41, 64, 211, 0.12) 20px, rgba(41, 64, 211, 0.04) 20px, rgba(41, 64, 211, 0.04) 40px);
-      display: grid;
-      place-items: center;
-      font-weight: 600;
-      color: rgba(41, 64, 211, 0.74);
-    }
-
-    footer {
-      padding: 60px 22px 90px;
-      text-align: center;
-      font-size: 14px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: rgba(18, 18, 18, 0.48);
-    }
-
-    @media (max-width: 900px) {
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .hero {
-        grid-template-columns: 1fr;
-      }
-
-      .hero::before {
-        inset: -120px -60px -40px -60px;
-      }
-
-      nav ul {
-        flex-wrap: wrap;
-        gap: 18px;
-      }
-
-      .timeline {
-        padding-left: 20px;
-      }
-
-      .timeline-item::before {
-        left: -22px;
-      }
+    .topbar{
+      display:flex;justify-content:flex-end;gap:10px;margin-bottom:10px;color:var(--muted);font-size:.92rem;
     }
   </style>
 </head>
 <body>
-  <main>
-    <header>
-      <div class="identity">
-        <h1>TBD</h1>
-        <p>TBD</p>
+  <div class="page">
+    <!-- Left: Sidebar -->
+    <aside class="sidebar card">
+      <div class="profile">
+        <!-- Embedded SVG placeholder; replace with your own image -->
+        <img class="avatar" alt="avatar"
+             src="data:image/svg+xml;utf8,<?xml version='1.0' encoding='UTF-8'?>\
+<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'>\
+<rect width='100%' height='100%' fill='%23e9dcc6' />\
+<text x='50%' y='48%' dominant-baseline='middle' text-anchor='middle' font-family='Georgia, serif' font-size='22' fill='%23756a5a'>Photo</text>\
+<text x='50%' y='66%' dominant-baseline='middle' text-anchor='middle' font-family='Georgia, serif' font-size='14' fill='%23756a5a'>Replace me</text>\
+</svg>"/>
+        <div class="name">TBD <small>漢字名 TBD</small></div>
+        <div class="links">
+          <a href="#" rel="noopener">X/Twitter</a>
+          <a href="#" rel="noopener">GitHub</a>
+          <a href="#" rel="noopener">Google Scholar</a>
+          <a href="#" rel="noopener">Email</a>
+        </div>
+        <a class="anon-feedback muted anon-feedback" href="#" rel="noopener">Anon Feedback</a>
       </div>
-      <nav aria-label="Primary">
-        <ul>
-          <li><a href="#about">About</a></li>
-          <li><a href="#work">Work</a></li>
-          <li><a href="#writing">Writing</a></li>
-          <li><a href="#contact">Contact</a></li>
+    </aside>
+
+    <!-- Right: Main content -->
+    <main class="content card">
+      <div class="hello">
+        <h1>Hi <span class="emoji">👋</span></h1>
+        <p>I am Mingyuan Wu at <a href="#">TBD</a>. I am currently a PhD candiate in Computer Sciences at <a href="#"> University of Illinois, Urbana Chmapign</a>. </p>
+        <p>TBD.</p>
+        <p>TBD <strong>vision language model agents</strong> and <strong>reasoners</strong>.</p>
+      </div>
+
+      <div class="foot-space"></div>
+
+      <section class="research">
+        <h2>Research <span class="chip">Selected</span></h2>
+        <div class="select-line muted">(*, ^ denotes equal contribution)</div>
+        <ul class="list">
+          <li>
+            <div class="paper-title">TBD-1</div>
+            <div class="paper-meta">Team TBD, 2025</div>
+          </li>
+          <li>
+            <div class="paper-title">TBD-2</div>
+            <div class="paper-meta">Team TBD, 2025</div>
+          </li>
         </ul>
-      </nav>
-    </header>
+      </section>
 
-    <section class="hero" id="about">
-      <div>
-        <h2>TBD</h2>
-        <p>TBD</p>
-        <a class="cta" href="#contact">Get in touch</a>
-      </div>
-      <aside>
-        <span>Currently</span>
-        <strong>TBD</strong>
-        <span>Previously</span>
-        <strong>TBD</strong>
-        <span>Based in</span>
-        <strong>TBD</strong>
-      </aside>
-    </section>
+      <div class="foot-space"></div>
 
-    <section id="work">
-      <h3>Selected Work</h3>
-      <div class="two-column">
-        <article class="card">
-          <h4>TBD</h4>
-          <p>TBD</p>
-        </article>
-        <article class="card">
-          <h4>TBD</h4>
-          <p>TBD</p>
-        </article>
-        <article class="card">
-          <h4>TBD</h4>
-          <p>TBD</p>
-        </article>
-        <article class="card">
-          <h4>TBD</h4>
-          <p>TBD</p>
-        </article>
-      </div>
-    </section>
+      <section class="events">
+        <h2>Events</h2>
+        <ul class="list">
+          <li><span class="date">Date</span> — <a href="#">Invited Talk</a> at TBD Institute.</li>
+        </ul>
+      </section>
 
-    <section id="experience">
-      <h3>Experience</h3>
-      <p>TBD</p>
-      <div class="timeline">
-        <div class="timeline-item">
-          <time>TBD</time>
-          <div>TBD</div>
-        </div>
-        <div class="timeline-item">
-          <time>TBD</time>
-          <div>TBD</div>
-        </div>
-        <div class="timeline-item">
-          <time>TBD</time>
-          <div>TBD</div>
-        </div>
-      </div>
-    </section>
+      <div class="foot-space"></div>
 
-    <section id="writing">
-      <h3>Writing & Notes</h3>
-      <div class="two-column">
-        <article class="card">
-          <h4>TBD</h4>
-          <p>TBD</p>
-        </article>
-        <article class="card">
-          <h4>TBD</h4>
-          <p>TBD</p>
-        </article>
-      </div>
-    </section>
-
-    <section id="gallery">
-      <h3>Gallery</h3>
-      <p>TBD</p>
-      <div class="gallery">
-        <div>TBD</div>
-        <div>TBD</div>
-        <div>TBD</div>
-        <div>TBD</div>
-      </div>
-    </section>
-
-    <section id="contact">
-      <h3>Contact</h3>
-      <div class="two-column">
-        <div>
-          <p>TBD</p>
-          <p>TBD</p>
-        </div>
-        <div class="card">
-          <h4>Email</h4>
-          <p><a href="mailto:tbd@example.com">tbd@example.com</a></p>
-          <h4 style="margin-top:18px;">Elsewhere</h4>
-          <p><a href="#">TBD</a></p>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    © <span id="year"></span> TBD. Crafted with intention.
-  </footer>
-
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
+      <section class="more">
+        <p class="muted"><a href="#">Earlier events…</a></p>
+      </section>
+    </main>
+  </div>
 </body>
 </html>
