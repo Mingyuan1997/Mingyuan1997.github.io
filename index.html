@@ -58,3 +58,188 @@
     .avatar{
       width:140px;height:140px;border-radius:14px;
       object-fit:cover;
+      border:1px solid var(--rule);
+      background:#f1eadf;
+      display:block;
+    }
+    .name{
+      font-weight:700;
+      font-size:1.4rem;
+    }
+    .name small{display:block;color:var(--muted);font-size:.95rem;margin-top:2px}
+    .links{
+      display:flex;flex-wrap:wrap;gap:10px 14px;justify-content:center;margin-top:6px;
+      font-size:0.95rem;
+    }
+    .links a{position:relative}
+    .links a:after{
+      content:"";position:absolute;left:0;bottom:-1px;width:100%;height:1px;background:currentColor;opacity:.15;
+      transform:scaleX(0);transform-origin:left;transition:transform .2s ease;
+    }
+    h1,h2{
+      margin: 10px 0 12px;
+    }
+    h2{
+      font-size:1.15rem;
+      letter-spacing:.02em;
+      text-transform:uppercase;
+      font-weight:800;
+      border-bottom:1px solid var(--rule);
+      padding-bottom:6px;
+    }
+    .hello h1{
+      font-size:1.6rem;
+      display:flex;align-items:center;gap:.55rem;
+    }
+    .hello p{margin: 10px 0}
+    .muted{color:var(--muted)}
+    .select-line{
+      font-size:.95rem;color:var(--muted);
+    }
+    .list{
+      list-style:none;margin:0;padding:0;
+    }
+    .list li{
+      padding:10px 0 12px;
+      border-bottom:1px dashed var(--rule);
+    }
+    .paper-title{
+      font-weight:700;
+    }
+    .paper-meta{
+      color:var(--muted);
+      font-size:.96rem;
+      margin-top:2px;
+    }
+    .emoji{font-size:1.1em}
+    .events .date{
+      font-weight:700;
+    }
+    .foot-space{height:16px}
+    .chip{
+      display:inline-block;
+      font-size:.8rem;
+      padding:.1rem .45rem;
+      border:1px solid var(--rule);
+      border-radius:999px;
+      background:#fff;
+      vertical-align:baseline;
+      margin-left:.4rem;
+      color:var(--muted);
+    }
+    .topbar{
+      display:flex;justify-content:flex-end;gap:10px;margin-bottom:10px;color:var(--muted);font-size:.92rem;
+    }
+
+    /* --- Experience styles (used in main content) --- */
+    .exp-list{font-size:.94rem}
+    .exp-item{padding:10px 0 12px;border-bottom:1px dashed var(--rule)}
+    .exp-org{font-weight:700;display:block}
+    .exp-dates{color:var(--muted);font-size:.88rem;margin-top:2px}
+    .exp-role{margin-top:2px}
+    .exp-topic,.exp-mentors{color:var(--muted);font-size:.9rem;margin-top:3px}
+    .exp-topic b,.exp-mentors b{color:var(--ink)}
+  </style>
+</head>
+<body>
+  <div class="page">
+    <!-- Left: Sidebar -->
+    <aside class="sidebar card">
+      <div class="profile">
+        <!-- Embedded SVG placeholder; replace with your own image -->
+        <img class="avatar" alt="Pic of Mingyuan Wu"
+             src="assets/image_mingyuan.jpg"
+             width="1000" height="1000" loading="lazy" decoding="async">
+        <div class="name">Mingyuan Wu</div>
+        <div class="name"><small>明远</small></div>
+        <div class="links">
+          <a href="https://x.com/MingyuanWu4" rel="noopener">X/Twitter</a>
+          <a href="https://github.com/Mingyuan1997" rel="noopener">GitHub</a>
+          <a href="https://scholar.google.com/citations?user=kp3PK7IAAAAJ&hl=en" rel="noopener">Google Scholar</a>
+          <a href="mw34@illinois.edu" rel="noopener">Email</a>
+        </div>
+      </div>
+      <!-- (Industrial section removed from sidebar) -->
+    </aside>
+
+    <!-- Right: Main content -->
+    <main class="content card">
+      <div class="hello">
+        <h2>Some Random Stuffs<span class="emoji">👋</span></h2>
+        <p>I am Mingyuan Wu, a part-time researcher at <a href="https://ai.meta.com/">Meta</a>. I am currently a final-year PhD candidate in Computer Science at <a href="https://illinois.edu/"> University of Illinois, Urbana Champaign</a>. I am fortunate to be advised by Prof. <a href="https://siebelschool.illinois.edu/about/people/faculty/klara"> Klara Nahrstedt</a>, and and to work with Prof. <a href="https://minjiazhang.github.io/">Minjia Zhang</a> and Prof. <a href="https://czhai.cs.illinois.edu/">Chengxiang Zhai</a>. Before starting my PhD, I spent wonderful time at UIUC and Shanghai Jiao Tong University.</p>
+        <p>I work on <strong>vision language model agents</strong> and <strong>multimodal reasoning</strong>. In 2025, I have been cooking VLMs and LLMs with recipes of multi-turn reinforcement learning fine-tuning and inference-time scaling, to boost self-improvement, reasoning, and memory use. </p>
+        <p>My <strong>research goal </strong> is to build human-level agents that collaborate with people in natural, intelligent ways.</p>
+        <p>When I’m not teaching large models, I prototype augmented-reality systems for fun, hoping that, one day, agentic models will power these interactive, human-centered interfaces.</p>
+      </div>
+
+      <div class="foot-space"></div>
+
+      <!-- Industrial Experience moved here -->
+      <section class="experience">
+        <h2>Industrial</h2>
+        <ul class="exp-list">
+          <li class="exp-item">
+            <span class="exp-org">MRS AI, Meta</span>
+            <div class="exp-dates">May 2025 – Dec 2025 • Research Intern</div>
+            <div class="exp-topic">Bootstrapping Multimodal Reasoning with Self-verification in RL</div>
+            <div class="exp-mentors">with Shengyi Qian, Xudong Wang, Hanchao Yu</div>
+          </li>
+
+          <li class="exp-item">
+            <span class="exp-org">Video Rec, Meta</span>
+            <div class="exp-dates">May 2025 – Dec 2025 • Research Intern</div>
+            <div class="exp-topic">VLM/LLM for Video Recommendations and Retrieval</div>
+            <div class="exp-mentors">with Meng Wu, Daming Li, Arthur Zhang</div>
+          </li>
+
+          <li class="exp-item">
+            <span class="exp-org">Xin's Group, Adobe</span>
+            <div class="exp-dates">May 2022 – Aug 2022 • Research Intern</div>
+            <div class="exp-topic">Efficient Interactive Segmentation and Matting for Mobile Devices</div>
+            <div class="exp-mentors">with Zichuan Liu, Xin Lu</div>
+          </li>
+
+          <li class="exp-item">
+            <span class="exp-org">IOTG, Intel.</span>
+            <div class="exp-dates">May 2017 – Dec 2017 • Software Intern</div>
+            <div class="exp-topic">On-Camera Object Detection</div>
+            <div class="exp-mentors">with Wenjie Wang</div>
+          </li>
+        </ul>
+      </section>
+
+      <div class="foot-space"></div>
+
+      <section class="research">
+        <h2>Research <span class="chip">Selected</span></h2>
+        <div class="select-line muted">(*, ^ denotes equal contribution)</div>
+        <ul class="list">
+          <li>
+            <div class="paper-title">TBD-1</div>
+            <div class="paper-meta">Team TBD, 2025</div>
+          </li>
+          <li>
+            <div class="paper-title">TBD-2</div>
+            <div class="paper-meta">Team TBD, 2025</div>
+          </li>
+        </ul>
+      </section>
+
+      <div class="foot-space"></div>
+
+      <section class="events">
+        <h2>Events</h2>
+        <ul class="list">
+          <li><span class="date">Date</span> — <a href="#">Invited Talk</a> at TBD Institute.</li>
+        </ul>
+      </section>
+
+      <div class="foot-space"></div>
+
+      <section class="more">
+        <p class="muted"><a href="#">Earlier events…</a></p>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
