@@ -71,6 +71,13 @@
       display:flex;flex-wrap:wrap;gap:10px 14px;justify-content:center;margin-top:6px;
       font-size:0.95rem;
     }
+    .research #pub-list .publication-item .links{
+      display: flex;            /* keeps multiple links on one line */
+      gap: .5rem;
+      justify-content: flex-start; /* LEFT align */
+      text-align: left;         /* overrides any parent text-align:center */
+      margin-left: 0;
+    }
     .links a{position:relative}
     .links a:after{
       content:"";position:absolute;left:0;bottom:-1px;width:100%;height:1px;background:currentColor;opacity:.15;
@@ -135,6 +142,25 @@
     .topbar{
       display:flex;justify-content:flex-end;gap:10px;margin-bottom:10px;color:var(--muted);font-size:.92rem;
     }
+
+    /* === Additions: footnotes & selected-publications UI (no content changes) === */
+    .view-toggle{display:inline-flex;gap:.35rem;align-items:center;font-size:.95rem}
+    .toggle-link{background:none;border:0;padding:0 .1rem;font:inherit;cursor:pointer;color:var(--accent)}
+    .toggle-link:hover{text-decoration:underline}
+    .toggle-link.active{font-weight:700;text-decoration:underline}
+
+    .footnote-trigger{cursor:pointer}
+    .footnote-popup{position:absolute;z-index:9999;max-width:320px;background:var(--paper);border:1px solid var(--rule);border-radius:10px;box-shadow:0 10px 25px rgba(0,0,0,.12);opacity:0;transform:translateY(-4px);transition:opacity .18s ease, transform .18s ease}
+    .footnote-popup.active{opacity:1;transform:translateY(0)}
+    .footnote-content{padding:10px 12px;position:relative}
+    .footnote-close{position:absolute;top:6px;right:6px;background:transparent;border:0;font-size:1rem;cursor:pointer}
+
+    /* Optional: expand details on mobile when item has .expanded */
+    .publication-item.expanded .details{display:block}
+
+
+
+
   </style>
 </head>
 <body>
@@ -152,8 +178,9 @@
           <a href="https://x.com/MingyuanWu4" rel="noopener">X/Twitter</a>
           <a href="https://github.com/Mingyuan1997" rel="noopener">GitHub</a>
           <a href="https://scholar.google.com/citations?user=kp3PK7IAAAAJ&hl=en" rel="noopener">Google Scholar</a>
-          <a href="mw34@illinois.edu" rel="noopener">Email</a>
+          <a href="mw34@illinois.edu" rel="noopener" class="footnote-trigger" data-footnote-content="mw34@illinois.edu">Email</a>
         </div>
+        <div class="name">Under Construction</div>
       </div>
     </aside>
 
@@ -172,27 +199,27 @@
       <section class="research">
         <h2>Industry Experience</h2>
         <ul class="list">
-          <li>
+          <li class="publication-item" data-selected="true">
             <div class="paper-title">MRS AI, Meta</div>
             <div class="paper-meta">May 2025 – Dec 2025 • Research Intern, with Shengyi Qian, Xudong Wang, <b>Hanchao Yu</b></div>
             <div class="paper-meta">Bootstrapping Multimodal Reasoning with Self-verification in RL</div>
           </li>
-          <li>
+          <li class="publication-item" data-selected="true">
             <div class="paper-title">Video Rec, Meta</div>
             <div class="paper-meta">May 2024 – Dec 2024 • Research Intern, with Meng Wu, Daming Li, <b>Arthur Zhang</b></div>
             <div class="paper-meta">VLM/LLM for Short Video Recommendations and Retrieval</div>
           </li>
-          <li>
+          <li class="publication-item" data-selected="true">
             <div class="paper-title">LLM Research Team, Capital Today</div>
             <div class="paper-meta">May 2023 – Aug 2023 • Research Intern, with partners</div>
             <div class="paper-meta">Distinct from academic research work, but with researchers from Tsinghua, ETH and Princeton</div>
           </li>        
-          <li>
+          <li class="publication-item" data-selected="true">
             <div class="paper-title">Xin's Group, Adobe</div>
             <div class="paper-meta">May 2022 – Aug 2022 • Research Intern, with Zichuan Liu, <b>Xin Lu</b> (both at Bytedance now)</div>
             <div class="paper-meta">Efficient Interactive Segmentation and Matting for Mobile</div>
           </li>
-          <li>
+          <li class="publication-item" data-selected="true">
             <div class="paper-title">IOTG, Intel</div>
             <div class="paper-meta">May 2017 – Dec 2017 • Machine Vision Software Intern, with <b>Wenjie Wang</b></div>
             <div class="paper-meta">On-Camera Object Detection</div>
@@ -200,20 +227,154 @@
         </ul>
       </section>
       
-      <section class="research">
-        <h2>Research <span class="chip">Selected</span></h2>
-        <div class="select-line muted">(*, ^ denotes equal contribution)</div>
-        <ul class="list">
-          <li>
-            <div class="paper-title">TBD-1</div>
-            <div class="paper-meta">Team TBD, 2025</div>
-          </li>
-          <li>
-            <div class="paper-title">TBD-2</div>
-            <div class="paper-meta">Team TBD, 2025</div>
-          </li>
-        </ul>
-      </section>
+ <section class="research">
+  <h2>Research</h2>
+  <div class="select-line muted">(* denotes equal contribution)</div>
+
+  <div class="view-toggle" style="margin:.4rem 0 .2rem 0">
+    <button id="selected-toggle" class="toggle-link active" type="button">Selected</button>
+    <span class="muted">/</span>
+    <button id="all-toggle" class="toggle-link" type="button">All</button>
+  </div>
+
+  <ul class="list" id="pub-list">
+    <!-- ===== Selected ===== -->
+    <li class="publication-item" data-selected="true">
+      <div class="paper-title">Aha Moment Revisited: Are VLMs Truly Capable of Self Verification in Inference-time Scaling?</div>
+      <div class="paper-meta"><strong>Mingyuan Wu*</strong>, Meitang Li*, Jingcheng Yang*, Jize Jiang, Kaizhuo Yan, Zhaoheng Li, Hanchao Yu, Minjia Zhang, Klara Nahrstedt</div>
+      <div class="paper-meta"><strong>NeurIPS 2025 Multimodal Algorithmic Reasoning Workshop</strong>, Oral Presentation.</div>
+      <div class="links"><a href="https://arxiv.org/pdf/2506.17417">Paper</a></div>
+    </li>
+
+    <li class="publication-item" data-selected="true">
+      <div class="paper-title">VTool-R1: VLMs Learn to Think with Images via Reinforcement Learning on Multimodal Tool Use</div>
+      <div class="paper-meta"><strong>Mingyuan Wu*</strong>, Jingcheng Yang*, Jize Jiang, Meitang Li, Kaizhuo Yan, Zhaoheng Li, Minjia Zhang, Chengxiang Zhai, Klara Nahrstedt</div>
+      <div class="paper-meta">Preprint.</div>
+      <div class="links"><a href="https://arxiv.org/abs/2505.19255">Paper</a> <a href="https://github.com/VTool-R1/VTool-R1">Code</a></div>
+    </li>
+
+    <li class="publication-item" data-selected="true">
+      <div class="paper-title">Cache-of-Thought: Master-Apprentice Framework for Cost-Effective Vision Language Model Reasoning</div>
+      <div class="paper-meta"><strong>Mingyuan Wu*</strong>, Jize Jiang*, Haozhen Zheng*, Meitang Li, Zhaoheng Li, Beitong Tian, Bo Chen, Yongjoo Park, Minjia Zhang, Chengxiang Zhai, Klara Nahrstedt</div>
+      <div class="paper-meta"><strong>EMNLP 2025 Main</strong>.</div>
+      <div class="links"><a href="https://arxiv.org/pdf/2502.20587">Paper</a> <a href="https://github.com/UIUC-MONET/Cache-of-Thoughts">Code</a></div>
+    </li>
+
+    <li class="publication-item" data-selected="true">
+      <div class="paper-title">Spatio-Temporal LLM: Reasoning about Environments and Actions</div>
+      <div class="paper-meta">Haozhen Zheng, Beitong Tian, <strong>Mingyuan Wu</strong>, Zhenggang Tang, Klara Nahrstedt, Alex Schwing</div>
+      <div class="paper-meta">Preprint.</div>
+      <div class="links"><a href="https://arxiv.org/abs/2507.05258">Paper</a> <a href="https://github.com/zoezheng126/Spatio-Temporal-LLM">Code</a></div>
+    </li>
+
+    <li class="publication-item" data-selected="true">
+      <div class="paper-title">RecoWorld: Building Simulated Environments for Agentic Recommender Systems</div>
+      <div class="paper-meta">MRS AI Teams at Meta</div>
+      <div class="paper-meta">Preprint.</div>
+    </li>
+
+    <li class="publication-item" data-selected="true">
+      <div class="paper-title">TraceNet: Segment One Thing Efficiently</div>
+      <div class="paper-meta"><strong>Mingyuan Wu</strong>, Zichuan Liu, Hongpeng Guo, Bo Chen, Xin Lu, Klara Nahrstedt</div>
+      <div class="paper-meta"><strong>IEEE MIPR 2025</strong> — 🏆 <strong>Best Student Paper Award</strong>.</div>
+    </li>
+
+    <li class="publication-item" data-selected="true">
+      <div class="paper-title">Anywhere Avatar: 3D Telepresence with Just a Phone and a Laptop</div>
+      <div class="paper-meta">Ruifan Ji, <strong>Mingyuan Wu</strong>, Bo Chen, Michael Zink, Ramesh Sitaraman, Jacob Chakareski, Klara Nahrstedt</div>
+      <div class="paper-meta"><strong>ACM Multimedia 2025</strong>, Demo Track.</div>
+    </li>
+
+    <li class="publication-item" data-selected="true">
+      <div class="paper-title">Scene Graph Driven Hybrid Interactive VR Teleconferencing</div>
+      <div class="paper-meta"><strong>Mingyuan Wu*</strong>, Ruifan Ji*, Haozhen Zheng, Jiaxi Li, Beitong Tian, Bo Chen, Ruixiao Zhang, Jacob Chakareski, Michael Zink, Ramesh Sitaraman, Klara Nahrstedt</div>
+      <div class="paper-meta"><strong>ACM Multimedia 2024</strong>, Demo Track.</div>
+    </li>
+
+    <li class="publication-item" data-selected="true">
+      <div class="paper-title">UOUO: Uncontextualized Uncommon Objects for Measuring Knowledge Horizons of Vision Language Models</div>
+      <div class="paper-meta">Xinyu Pi*, <strong>Mingyuan Wu*</strong>, Jize Jiang*, Haozhen Zheng*, Beitong Tian, Chengxiang Zhai, Klara Nahrstedt, Zhiting Hu</div>
+      <div class="paper-meta"><strong>EMNLP 2024 Main</strong>.</div>
+      <div class="links"><a href="https://arxiv.org/pdf/2407.18391">Paper</a> <a href="https://github.com/zoezheng126/UOUO">Code</a></div>
+    </li>
+
+    <li class="publication-item" data-selected="true">
+      <div class="paper-title">miVirtualSeat: A Next Generation Hybrid Telepresence System</div>
+      <div class="paper-meta">Klara Nahrstedt, Ramesh Sitaraman, Jacob Chakareski, Michael Zink, <strong>Mingyuan Wu</strong>, Lingdong Wang, Bo Chen, Ruifan Ji, Kuny Lee, John Murray, Simran Singh, et&nbsp;al.</div>
+      <div class="paper-meta"><strong>ACM SIGCOMM 2025 EMS workshop</strong> Oral Presentation.</div>
+    </li>
+
+    <li class="publication-item" data-selected="true">
+      <div class="paper-title">Seaware: Semantic-aware View Prediction System for 360-degree Video Streaming</div>
+      <div class="paper-meta">Jounsuk Park, <strong>Mingyuan Wu</strong>, Kuan-Ying Lee, Bo Chen, Klara Nahrstedt, Michael Zink, Ramesh Sitaraman</div>
+      <div class="paper-meta"><strong>IEEE ISM 2020</strong> — 🏆 <strong>Best Paper Award</strong>.</div>
+    </li>
+
+    <!-- ===== All publications (includes the selected above) ===== -->
+    <li class="publication-item" data-selected="false">
+      <div class="paper-title">AquaVLM: Improving Underwater Situation Awareness with Mobile Vision Language Models</div>
+      <div class="paper-meta">Beitong Tian*, Lingzhi Zhao*, Bo Chen, Haozhen Zheng, Jingcheng Yang, <strong>Mingyuan Wu</strong>, Deepak Vasishth, Klara Nahrstedt</div>
+      <div class="paper-meta">Preprint.</div>
+    </li>
+
+    <li class="publication-item" data-selected="false">
+      <div class="paper-title">ImmerScope: Multi-view Video Aggregation at Edge towards Immersive Content Services</div>
+      <div class="paper-meta">Bo Chen, Hongpeng Guo, <strong>Mingyuan Wu</strong>, Zhe Yang, Zhisheng Yan, Klara Nahrstedt</div>
+      <div class="paper-meta"><strong>ACM SenSys 2024</strong>.</div>
+    </li>
+
+    <li class="publication-item" data-selected="false">
+      <div class="paper-title">GaugeTracker: AI-Powered Cost-Effective Analog Gauge Monitoring System</div>
+      <div class="paper-meta">Beitong Tian, <strong>Mingyuan Wu</strong>, Ruixiao Zhang, Haozhen Zheng, Bo Chen, Yaohui Wang, Shiv Trivedi, Shanbo Zhang, et&nbsp;al., Klara Nahrstedt</div>
+      <div class="paper-meta"><strong>IEEE MIPR 2024</strong>.</div>
+    </li>
+
+    <li class="publication-item" data-selected="false">
+      <div class="paper-title">Vesper: Learning to Manage Uncertainty in Video Streaming</div>
+      <div class="paper-meta">Bo Chen, <strong>Mingyuan Wu</strong>, Hongpeng Guo, Zhisheng Yan, Klara Nahrstedt</div>
+      <div class="paper-meta"><strong>ACM MMSys 2024</strong>.</div>
+    </li>
+
+    <li class="publication-item" data-selected="false">
+      <div class="paper-title">I-Matting: Improved Trimap-Free Image Matting</div>
+      <div class="paper-meta">Zichuan Liu*, Ke Wang*, <strong>Mingyuan Wu*</strong>, Lantao Yu, Klara Nahrstedt, Xin Lu</div>
+      <div class="paper-meta"><strong>IEEE ICME 2024</strong>.</div>
+    </li>
+
+    <li class="publication-item" data-selected="false">
+      <div class="paper-title">Interactive Scene Graph Analysis for Future Intelligent Teleconferencing Systems</div>
+      <div class="paper-meta"><strong>Mingyuan Wu</strong>, Yuhan Lu, Shiv Trivedi, Bo Chen, Qian Zhou, Lingdong Wang, Simran Singh, Michael Zink, Ramesh Sitaraman, Jacob Chakareski, Klara Nahrstedt</div>
+      <div class="paper-meta"><strong>IEEE ISM 2023</strong>.</div>
+    </li>
+
+    <li class="publication-item" data-selected="false">
+      <div class="paper-title">360TripleView: 360-Degree Video View Management System Driven by Convergence Value of Viewing Preferences</div>
+      <div class="paper-meta">Qian Zhou, <strong>Mingyuan Wu</strong>, Yinjie Zhang, Michael Zink, Ramesh Sitaraman, Klara Nahrstedt</div>
+      <div class="paper-meta"><strong>IEEE ISM 2023</strong>.</div>
+    </li>
+
+    <li class="publication-item" data-selected="false">
+      <div class="paper-title">SAVG360: Saliency-aware Viewport-guidance-enabled 360-video Streaming System</div>
+      <div class="paper-meta">Yinjie Zhang, <strong>Mingyuan Wu</strong>, Beitong Tian, Jiaxi Li, Bo Chen, Qian Zhou, Klara Nahrstedt</div>
+      <div class="paper-meta"><strong>IEEE ISM 2023</strong>.</div>
+    </li>
+
+    <li class="publication-item" data-selected="false">
+      <div class="paper-title">Video 360 Content Navigation for Mobile HMD Devices</div>
+      <div class="paper-meta">Jounsuk Park, <strong>Mingyuan Wu</strong>, Eric Lee, Klara Nahrstedt, Yash Shah, Arielle Rosenthal, John Murray, Kevin Spiteri, Michael Zink, Ramesh Sitaraman</div>
+      <div class="paper-meta"><strong>ACM Multimedia 2021</strong>.</div>
+    </li>
+
+
+    <!-- ===== Also contributed to ===== -->
+    <li class="publication-item" data-selected="false">
+      <div class="paper-title">AnyLoc: Energy-efficient Visual Localization in Dynamic and Large-Scale Scenes without Pain</div>
+      <div class="paper-meta">Beitong Tian, Jingcheng Yang, Jionghao Wei, Zhenggang Tang, Yuheng Wang, Hongwen Xiao, Haozhen Zheng, <strong>Mingyuan Wu</strong>, Shiv Trivedi, Klara Nahrstedt</div>
+      <div class="paper-meta">Preprint.</div>
+    </li>
+  </ul>
+</section>
+
 
       <div class="foot-space"></div>
 
@@ -229,7 +390,87 @@
       <section class="more">
         <p class="muted"><a href="#">Earlier events…</a></p>
       </section>
+      <section class="acknowledgements">
+        <h2>Acknowledgements</h2>
+        <p>
+          This simple website is built from <a href="https://www.jiayipan.com" rel="noopener">Jiayi Pan's website</a> and Codex,
+        </p>
+      </section>
     </main>
   </div>
+
+  <!-- Lightweight JS added; does not alter existing content -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Publications: default to Selected
+      showSelectedPublications();
+
+      // Click-to-expand (mobile-friendly); ignores clicks on links
+      document.querySelectorAll('.publication-item').forEach(pub => {
+        pub.addEventListener('click', (e) => {
+          if (e.target.tagName === 'A' || e.target.closest('a')) return;
+          pub.classList.toggle('expanded');
+        });
+      });
+
+      // Toggle buttons
+      const selBtn = document.getElementById('selected-toggle');
+      const allBtn = document.getElementById('all-toggle');
+      if (selBtn && allBtn){
+        selBtn.addEventListener('click', () => togglePublicationView('selected'));
+        allBtn.addEventListener('click', () => togglePublicationView('all'));
+      }
+
+      // Footnote‑style popups (e.g., for Email)
+      setupFootnotes();
+    });
+
+    function togglePublicationView(viewType){
+      const pubs = document.querySelectorAll('#pub-list .publication-item');
+      pubs.forEach(pub => {
+        if (viewType === 'selected'){
+          pub.style.display = (pub.getAttribute('data-selected') === 'true') ? 'list-item' : 'none';
+        } else {
+          pub.style.display = 'list-item';
+        }
+      });
+      const selBtn = document.getElementById('selected-toggle');
+      const allBtn = document.getElementById('all-toggle');
+      if (selBtn && allBtn){
+        selBtn.classList.toggle('active', viewType === 'selected');
+        allBtn.classList.toggle('active', viewType === 'all');
+      }
+    }
+    function showSelectedPublications(){ togglePublicationView('selected'); }
+
+    // Footnote popup logic (borrowed pattern, minimal and self‑contained)
+    function setupFootnotes(){
+      document.querySelectorAll('.footnote-trigger').forEach(trigger => {
+        trigger.addEventListener('click', function(e){
+          e.preventDefault(); e.stopPropagation();
+          // Remove any existing popups
+          document.querySelectorAll('.footnote-popup').forEach(p => p.remove());
+          const content = this.getAttribute('data-footnote-content') || '';
+          const popup = document.createElement('div');
+          popup.className = 'footnote-popup';
+          popup.innerHTML = '<div class="footnote-content">'+content+'<button class="footnote-close" aria-label="Close">✕</button></div>';
+          document.body.appendChild(popup);
+          // Position near trigger
+          const rect = this.getBoundingClientRect();
+          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+          const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+          const h = popup.offsetHeight || 140;
+          const below = rect.bottom + h < window.innerHeight;
+          popup.style.top = (below ? rect.bottom + scrollTop + 5 : rect.top + scrollTop - h - 10) + 'px';
+          popup.style.left = (rect.left + scrollLeft) + 'px';
+          requestAnimationFrame(()=> popup.classList.add('active'));
+          const close = ()=>{ popup.classList.remove('active'); setTimeout(()=>popup.remove(), 150); document.removeEventListener('click', outside); };
+          popup.querySelector('.footnote-close').addEventListener('click', close);
+          const outside = (evt)=>{ if(!popup.contains(evt.target) && evt.target !== trigger) close(); };
+          setTimeout(()=> document.addEventListener('click', outside), 20);
+        });
+      });
+    }
+  </script>
 </body>
 </html>
