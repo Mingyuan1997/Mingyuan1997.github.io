@@ -34,6 +34,48 @@
       grid-template-columns: 280px 1fr;
       grid-gap: 32px;
     }
+    @media (max-width: 860px){
+      /* Keep two-column layout but make sidebar smaller */
+      .page{
+        grid-template-columns: 180px 1fr;  /* Smaller sidebar on mobile */
+        grid-gap: 16px;  /* Tighter spacing on mobile */
+        padding: 16px 12px 60px;
+      }
+      .sidebar{
+        position: sticky;  /* Keep sticky behavior */
+        top: 16px;
+        padding: 12px;  /* Less padding */
+      }
+      /* Scale down sidebar elements */
+      .avatar{
+        width: 80px;
+        height: 80px;
+        border-radius: 10px;
+      }
+      .name{
+        font-size: 1.1rem;  /* Smaller name */
+      }
+      .name small{
+        font-size: .8rem;
+      }
+      .links{
+        font-size: 0.8rem;
+        gap: 6px 10px;
+      }
+      .misc{
+        font-size: .8rem;
+      }
+      .misc .label{
+        font-size: .85rem;
+      }
+      .misc ul{
+        padding-left: 0.9rem;
+      }
+      /* Adjust main content padding */
+      .content{
+        padding: 16px 18px;
+      }
+    }
     .card{
       background:var(--paper);
       border:1px solid var(--rule);
