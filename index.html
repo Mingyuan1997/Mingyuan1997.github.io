@@ -27,12 +27,12 @@
     a{color:var(--accent);text-decoration:none}
     a:hover{text-decoration:underline}
     .page{
-      max-width:1100px;
+      max-width: min(1500px, 94vw);
       margin:0 auto;
-      padding:24px 20px 80px;
+      padding:24px 32px 80px;
       display:grid;
-      grid-template-columns: 280px 1fr;
-      grid-gap: 32px;
+      grid-template-columns: 300px minmax(0, 1fr);
+      grid-gap: 40px;
     }
     @media (max-width: 860px){
       /* Keep two-column layout but make sidebar smaller */
@@ -279,7 +279,7 @@
         <p>My research focuses on <strong>agents</strong> and <strong>multimodal intelligence</strong>. I work across post-training, harnesses, real-world applications of agents, and the science of agentic systems. </p>
         <p>I am particularly interested in <strong>multi-agent post-training</strong> and <strong>dynamic agent workflows</strong> in 2026. </p>
         <p>When I’m not teaching large models, I prototype augmented-reality systems for fun, hoping that, one day, agentic models will power these interactive, human-centered interfaces.</p>
-        <p>Always happy to chat about LLM/agent research, career advice, and collaborations, feel free to reach out.</p>
+        <p>I am always happy to chat about LLM/agent research, career advice, and collaborations, feel free to reach out.</p>
       </div>
 
       <div class="foot-space"></div>
